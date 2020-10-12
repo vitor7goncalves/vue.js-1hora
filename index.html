@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt.BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        new Vue ({
+el: '#app',
+template: `
+<div class="container">
+        <h1>Comentários</h1>
+        <hr />
+        <div class="form-todo form-group">
+            <p>
+                <input v-model="name" type="text" class="form-control" placeholder="Nome" aria-label="Nome" aria-describedby="basic-addon1">
+            </p>
+            <p>
+                <textarea v-model="message" placeholder="Escreva seu comentário..."  class="form-control" aria-label="With textarea" name="author"></textarea>
+            </p>
+            <p>
+                <button @click="addComment" type="submit" class="btn btn-primary">Comentar</button>
+            </p>
+        </div>
+        <div class="list-group">
+            <div  class="list-group-item" v-for="(comment, index) in allComments">
+               <span class="comment_author">Autor: <strong>{{ comment.name }}</strong></span>
+               <p>{{ comment.message }}</p>
+               <div>
+                   <a href="#" title="Excluir" @click.prevent="removeComment(index)">Excluir</a>
+               </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+`,
+      data() {
+          return {
+             comments: [
+                
+             ],
+             name: '',
+             message:''
+          }
+      },
+      methods: {
+          addComment(){
+              if(this.message.trim() === ''){
+                  return;
+              }
+
+            this.comments.push({
+                name: this.name,
+                message: this.message,
+            })
+
+              this.name = "";
+              this.message = "";
+          },
+          removeComment(index){
+              this.comments.splice(index, 1);
+          }
+      },
+
+      computed: {
+          allComments(){
+              return this.comments.map(comment => ({
+                  ...comment,
+                  name: comment.name.trim() === '' ? 'Anônimo' : comment.name,
+              }))
+          }
+      },
+
+        });
+    </script>
+</body>
+</html>
